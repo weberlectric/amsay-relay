@@ -4,7 +4,7 @@
 # The player's name and the message content are parsed out and then sent to
 # Discord via a webhook.
 
-discord_config=${1:-"./japlus/discord.cfg"}
+discord_config=${1:-"./japlus/amsay_relay.cfg"}
 
 if [ ! -f $discord_config ] ; then
     echo "Discord config not found at path: $discord_config"
