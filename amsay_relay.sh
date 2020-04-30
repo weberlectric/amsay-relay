@@ -60,7 +60,7 @@ watch_amsay() {
             echo "$line" \
             | awk -F"${escaped_player_name}: " '{print $NF}' \
             | sed 's/\\/\\\\/g' # escape slashes
-		)
+        )
 
         send_to_discord $1 "$clean_player_name" "$message"
     done < <(tail -fn 0 $2 | grep --line-buffered "say_admin") # /amsay only 
