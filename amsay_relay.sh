@@ -4,7 +4,7 @@
 # The player's name and the message content are parsed out and then sent to
 # Discord via a webhook.
 
-discord_config=${1:-"./japlus/amsay_relay.cfg"}
+discord_config=${1:-"./amsay_relay.cfg"}
 
 if [ ! -f $discord_config ] ; then
     echo "Discord config not found at path: $discord_config"
@@ -45,17 +45,21 @@ watch_amsay() {
     while read -r line; do
         # Grab the raw player name, including color codes
         raw_player_name=$(
-            echo "$line" | \
-            awk -F" say_admin: " '{print $2}' | \
-            awk -F": " '{print $1}'
+            echo "$line" \
+            | awk -F" say_admin: " '{print $2}' \
+            | awk -F": " '{print $1}'
         )
 
         # We want to remove color codes from player name for better readability
-        clean_player_name=$(echo $raw_player_name | sed 's/[!^][0-9]//g') 
+        clean_player_name=$(echo "$raw_player_name" | sed 's/[!^][0-9]//g') 
 
-        message=$(echo "$line" \
-		| awk -F"$(printf '%q\n' "$raw_player_name"): " '{print $NF}' \
-		| sed 's/\\/\\\\/g' # escape slashes
+        # Escape any special characters in the raw player name for proper splitting
+        escaped_player_name=$(sed 's/[^^]/[&]/g; s/\^/\\^/g' <<< "$raw_player_name")
+
+        message=$(
+            echo "$line" \
+            | awk -F"${escaped_player_name}: " '{print $NF}' \
+            | sed 's/\\/\\\\/g' # escape slashes
 		)
 
         send_to_discord $1 "$clean_player_name" "$message"
