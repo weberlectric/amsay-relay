@@ -54,7 +54,7 @@ watch_amsay() {
         clean_player_name=$(echo "$raw_player_name" | sed 's/[!^][0-9]//g') 
 
         # Escape any special characters in the raw player name for proper splitting
-        escaped_player_name=$(sed 's/[^^]/[&]/g; s/\^/\\^/g' <<< "$raw_player_name")
+        escaped_player_name=$(sed 's/[^^]/[&]/g; s/\^/\\\\^/g' <<< "$raw_player_name")
 
         message=$(
             echo "$line" \
