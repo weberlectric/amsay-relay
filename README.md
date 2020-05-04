@@ -1,7 +1,6 @@
 ## What does this do?
 
-This is a simple bash script that runs on dedicated JKA server box that will take
-amsay messages and relay them to a Discord of choice, via a Discord webhook.
+This is a simple bash script that that will take messages sent via /amsay and relay them to your Discord via a Discord webhook.
 
 ## Getting Started
 
